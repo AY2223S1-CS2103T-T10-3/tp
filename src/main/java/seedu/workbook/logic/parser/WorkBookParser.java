@@ -16,6 +16,7 @@ import seedu.workbook.logic.commands.FindCommand;
 import seedu.workbook.logic.commands.HelpCommand;
 import seedu.workbook.logic.commands.ListCommand;
 import seedu.workbook.logic.commands.RedoCommand;
+import seedu.workbook.logic.commands.SortCommand;
 import seedu.workbook.logic.commands.UndoCommand;
 import seedu.workbook.logic.parser.exceptions.ParseException;
 
@@ -63,6 +64,9 @@ public class WorkBookParser {
 
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
+
+        case SortCommand.COMMAND_WORD:
+            return new SortCommand();
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();

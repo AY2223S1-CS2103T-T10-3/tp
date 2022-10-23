@@ -33,7 +33,7 @@ public class ModelManager implements Model {
 
         versionedWorkBook = new VersionedWorkBook(workBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredInternships = new FilteredList<>(this.versionedWorkBook.getInternshipList());
+        filteredInternships = new FilteredList<>(this.versionedWorkBook.getUiFacingInternshipList());
     }
 
     public ModelManager() {
@@ -101,6 +101,8 @@ public class ModelManager implements Model {
     @Override
     public void addInternship(Internship internship) {
         versionedWorkBook.addInternship(internship);
+        // resets ui view to show all internships whenever add command is executed
+        // ideal behaviour TBD
         updateFilteredInternshipList(PREDICATE_SHOW_ALL_INTERNSHIPS);
     }
 
@@ -109,6 +111,16 @@ public class ModelManager implements Model {
         requireAllNonNull(target, editedInternship);
 
         versionedWorkBook.setInternship(target, editedInternship);
+    }
+
+    @Override
+    public void sortInternshipListByDate() {
+        versionedWorkBook.sortInternshipListByDate();
+    }
+
+    @Override
+    public void resetOrder() {
+        versionedWorkBook.resetOrder();
     }
 
     //=========== Filtered Internship List Accessors =============================================================

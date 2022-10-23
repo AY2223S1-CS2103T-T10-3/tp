@@ -16,11 +16,13 @@ public class ListCommand extends Command {
     /** Message string displaying successful execution of the list command */
     public static final String MESSAGE_SUCCESS = "Listed all internships";
 
-
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredInternshipList(PREDICATE_SHOW_ALL_INTERNSHIPS);
+        // `list` should reset ui, showing internships in unsorted order aka the order
+        // the user added them in
+        model.resetOrder();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

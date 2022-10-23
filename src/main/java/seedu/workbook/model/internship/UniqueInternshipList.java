@@ -8,6 +8,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import seedu.workbook.model.internship.exceptions.DuplicateInternshipException;
 import seedu.workbook.model.internship.exceptions.InternshipNotFoundException;
 
@@ -31,9 +32,21 @@ import seedu.workbook.model.internship.exceptions.InternshipNotFoundException;
  */
 public class UniqueInternshipList implements Iterable<Internship> {
 
-    private final ObservableList<Internship> internalList = FXCollections.observableArrayList();
-    private final ObservableList<Internship> internalUnmodifiableList = FXCollections
-            .unmodifiableObservableList(internalList);
+    private final ObservableList<Internship> baseInternalList = FXCollections.observableArrayList();
+    private final ObservableList<Internship> unmodifiableBaseInternalList = FXCollections
+            .unmodifiableObservableList(baseInternalList);
+
+    private ObservableList<Internship> uiFacingInternalList = FXCollections.observableArrayList();
+    private final ObservableList<Internship> unmodifiableUiFacingInternalList = FXCollections
+            .unmodifiableObservableList(uiFacingInternalList);
+
+    // wrapper on baseInternalList, is automatically updated whenever
+    // baseInternalList is updated, and is always in sorted order w.r.t
+    // InternshipComparator
+    private final SortedList<Internship> internalListSortedByDate = new SortedList<>(baseInternalList,
+            new InternshipComparator());
+
+    private boolean currentlySortedByDate = false;
 
     /**
      * Returns true if the list contains an equivalent internship as the given
@@ -41,7 +54,7 @@ public class UniqueInternshipList implements Iterable<Internship> {
      */
     public boolean contains(Internship toCheck) {
         requireNonNull(toCheck);
-        return internalList.stream().anyMatch(toCheck::isSameInternship);
+        return baseInternalList.stream().anyMatch(toCheck::isSameInternship);
     }
 
     /**
@@ -53,7 +66,8 @@ public class UniqueInternshipList implements Iterable<Internship> {
         if (contains(toAdd)) {
             throw new DuplicateInternshipException();
         }
-        internalList.add(toAdd);
+        baseInternalList.add(toAdd);
+        refreshUiFacingInternalList();
     }
 
     /**
@@ -66,7 +80,7 @@ public class UniqueInternshipList implements Iterable<Internship> {
     public void setInternship(Internship target, Internship editedInternship) {
         requireAllNonNull(target, editedInternship);
 
-        int index = internalList.indexOf(target);
+        int index = baseInternalList.indexOf(target);
         if (index == -1) {
             throw new InternshipNotFoundException();
         }
@@ -75,7 +89,8 @@ public class UniqueInternshipList implements Iterable<Internship> {
             throw new DuplicateInternshipException();
         }
 
-        internalList.set(index, editedInternship);
+        baseInternalList.set(index, editedInternship);
+        refreshUiFacingInternalList();
     }
 
     /**
@@ -84,14 +99,17 @@ public class UniqueInternshipList implements Iterable<Internship> {
      */
     public void remove(Internship toRemove) {
         requireNonNull(toRemove);
-        if (!internalList.remove(toRemove)) {
+        if (!baseInternalList.remove(toRemove)) {
             throw new InternshipNotFoundException();
         }
+
+        refreshUiFacingInternalList();
     }
 
     public void setInternships(UniqueInternshipList replacement) {
         requireNonNull(replacement);
-        internalList.setAll(replacement.internalList);
+        baseInternalList.setAll(replacement.baseInternalList);
+        refreshUiFacingInternalList();
     }
 
     /**
@@ -104,31 +122,78 @@ public class UniqueInternshipList implements Iterable<Internship> {
             throw new DuplicateInternshipException();
         }
 
-        internalList.setAll(internships);
+        baseInternalList.setAll(internships);
+        refreshUiFacingInternalList();
+    }
+
+    /**
+     * Toggles sorting by date.
+     */
+    public void sortByDate() {
+        // changes active view to the sorted view
+        currentlySortedByDate = true;
+        refreshUiFacingInternalList();
+    }
+
+    /**
+     * Resets order of list, aka back to order in which Internships were added.
+     */
+    public void resetOrder() {
+        currentlySortedByDate = false;
+        refreshUiFacingInternalList();
+    }
+
+    /**
+     * (Re)Populates the base uiFacingInternalList with the correct internalList
+     * based on sort flag.
+     * Called whenever underlying `baseInternalList` has been modified, and allows
+     * user to see changes even if in sorted view.
+     * Recall that UI components are observing the unmodifiable wrapper on
+     * this `uiFacingInternalList`.
+     *
+     * @see #asUiFacingUnmodifiableObservableList()
+     */
+    private void refreshUiFacingInternalList() {
+        if (currentlySortedByDate) {
+            uiFacingInternalList.setAll(internalListSortedByDate);
+        } else {
+            uiFacingInternalList.setAll(baseInternalList);
+        }
     }
 
     /**
      * Returns the backing list as an unmodifiable {@code ObservableList}.
+     * To be used/observed by UI components.
+     *
+     * @see MainWindow#fillInnerParts()
      */
-    public ObservableList<Internship> asUnmodifiableObservableList() {
-        return internalUnmodifiableList;
+    public ObservableList<Internship> asUiFacingUnmodifiableObservableList() {
+        return unmodifiableUiFacingInternalList;
+    }
+
+    /**
+     * Returns the default ordered list as an unmodifiable {@code ObservableList}
+     * For saving and other operations that are order independent.
+     */
+    public ObservableList<Internship> asUnmodifiableBaseList() {
+        return unmodifiableBaseInternalList;
     }
 
     @Override
     public Iterator<Internship> iterator() {
-        return internalList.iterator();
+        return baseInternalList.iterator();
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof UniqueInternshipList // instanceof handles nulls
-                        && internalList.equals(((UniqueInternshipList) other).internalList));
+                        && baseInternalList.equals(((UniqueInternshipList) other).baseInternalList));
     }
 
     @Override
     public int hashCode() {
-        return internalList.hashCode();
+        return baseInternalList.hashCode();
     }
 
     /**

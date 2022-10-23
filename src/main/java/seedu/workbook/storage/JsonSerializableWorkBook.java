@@ -33,13 +33,13 @@ class JsonSerializableWorkBook {
 
     /**
      * Converts a given {@code ReadOnlyWorkBook} into this class for Jackson use.
-     *
+     * Uses the **unsorted** internship list from `source`.
      * @param source future changes to this will not affect the created
      *               {@code JsonSerializableWorkBook}.
      */
     public JsonSerializableWorkBook(ReadOnlyWorkBook source) {
         internships.addAll(
-                source.getInternshipList().stream().map(JsonAdaptedInternship::new).collect(Collectors.toList()));
+                source.getBaseInternshipList().stream().map(JsonAdaptedInternship::new).collect(Collectors.toList()));
     }
 
     /**

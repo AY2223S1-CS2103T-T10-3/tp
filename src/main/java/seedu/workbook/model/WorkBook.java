@@ -55,7 +55,7 @@ public class WorkBook implements ReadOnlyWorkBook {
     public void resetData(ReadOnlyWorkBook newData) {
         requireNonNull(newData);
 
-        setInternships(newData.getInternshipList());
+        setInternships(newData.getBaseInternshipList());
     }
 
     //// internship-level operations
@@ -98,17 +98,36 @@ public class WorkBook implements ReadOnlyWorkBook {
         internships.remove(key);
     }
 
+    /**
+     * Sorts list of internships by date
+     */
+    public void sortInternshipListByDate() {
+        internships.sortByDate();
+    }
+
+    /**
+     * Resets order of list
+     */
+    public void resetOrder() {
+        internships.resetOrder();
+    }
+
     //// util methods
 
     @Override
     public String toString() {
-        return internships.asUnmodifiableObservableList().size() + " internship applications";
+        return internships.asUnmodifiableBaseList().size() + " internship applications";
         // TODO: refine later
     }
 
     @Override
-    public ObservableList<Internship> getInternshipList() {
-        return internships.asUnmodifiableObservableList();
+    public ObservableList<Internship> getUiFacingInternshipList() {
+        return internships.asUiFacingUnmodifiableObservableList();
+    }
+
+    @Override
+    public ObservableList<Internship> getBaseInternshipList() {
+        return internships.asUnmodifiableBaseList();
     }
 
     @Override

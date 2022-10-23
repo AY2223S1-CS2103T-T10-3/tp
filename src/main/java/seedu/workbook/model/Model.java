@@ -64,6 +64,18 @@ public interface Model {
      */
     void setInternship(Internship target, Internship editedInternship);
 
+    /**
+     * Sorts the internship list by date.
+     *
+     */
+    void sortInternshipListByDate();
+
+    /**
+     * Resets the order of the internship list to default, oldest added application at top.
+     *
+     */
+    void resetOrder();
+
     /** Returns an unmodifiable view of the filtered internship list */
     ObservableList<Internship> getFilteredInternshipList();
 
