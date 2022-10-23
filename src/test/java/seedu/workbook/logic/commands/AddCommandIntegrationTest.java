@@ -39,7 +39,7 @@ public class AddCommandIntegrationTest {
 
     @Test
     public void execute_duplicateInternship_throwsCommandException() {
-        Internship internshipInList = model.getWorkBook().getInternshipList().get(0);
+        Internship internshipInList = model.getWorkBook().getBaseInternshipList().get(0);
         assertCommandFailure(new AddCommand(internshipInList), model, AddCommand.MESSAGE_DUPLICATE_INTERNSHIP);
     }
 

@@ -176,7 +176,7 @@ public class UniqueInternshipListTest {
     public void asUnmodifiableObservableList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(
             UnsupportedOperationException.class,
-            () -> uniqueInternshipList.asUnmodifiableObservableList().remove(0)
+            () -> uniqueInternshipList.asUnmodifiableBaseList().remove(0)
         );
     }
     // CHECKSTYLE.ON: SeparatorWrap

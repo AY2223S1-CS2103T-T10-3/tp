@@ -71,7 +71,7 @@ public class DeleteCommandTest {
 
         Index outOfBoundIndex = INDEX_SECOND_INTERNSHIP;
         // ensures that outOfBoundIndex is still in bounds of work book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getWorkBook().getInternshipList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getWorkBook().getBaseInternshipList().size());
 
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
 

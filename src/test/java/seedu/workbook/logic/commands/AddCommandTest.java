@@ -154,6 +154,16 @@ public class AddCommandTest {
         }
 
         @Override
+        public void sortInternshipListByDate() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void resetOrder() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public boolean canUndoWorkBook() {
             throw new AssertionError("This method should not be called.");
         }

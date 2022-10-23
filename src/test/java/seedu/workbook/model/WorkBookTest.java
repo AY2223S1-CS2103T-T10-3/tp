@@ -27,7 +27,7 @@ public class WorkBookTest {
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), workBook.getInternshipList());
+        assertEquals(Collections.emptyList(), workBook.getBaseInternshipList());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class WorkBookTest {
 
     @Test
     public void getInternshipList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> workBook.getInternshipList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> workBook.getBaseInternshipList().remove(0));
     }
 
     /**
@@ -93,7 +93,12 @@ public class WorkBookTest {
         }
 
         @Override
-        public ObservableList<Internship> getInternshipList() {
+        public ObservableList<Internship> getUiFacingInternshipList() {
+            return internships;
+        }
+
+        @Override
+        public ObservableList<Internship> getBaseInternshipList() {
             return internships;
         }
     }
