@@ -1,5 +1,9 @@
 package seedu.workbook.ui;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -161,6 +165,20 @@ public class MainWindow extends UiPart<Stage> {
         logic.setGuiSettings(guiSettings);
         helpWindow.hide();
         primaryStage.hide();
+    }
+
+    /**
+     * Opens a link to LeetCode.
+    */
+    @FXML
+    private void handleLc() {
+        try {
+            Desktop.getDesktop().browse(new URI("https://leetcode.com/"));
+        } catch (IOException e) {
+
+        } catch (URISyntaxException e) {
+
+        }
     }
 
     public InternshipListPanel getInternshipListPanel() {
