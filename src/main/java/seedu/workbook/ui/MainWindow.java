@@ -173,7 +173,7 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private void handleLc() {
         try {
-            Desktop.getDesktop().browse(new URI("https://leetcode.com/"));
+            Desktop.getDesktop().browse(new URI("https://leetcode.com/problemset/all/"));
         } catch (IOException e) {
 
         } catch (URISyntaxException e) {
