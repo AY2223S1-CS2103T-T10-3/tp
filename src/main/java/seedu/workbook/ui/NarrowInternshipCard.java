@@ -2,7 +2,6 @@ package seedu.workbook.ui;
 
 
 import java.util.Comparator;
-import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,15 +10,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.workbook.model.internship.Internship;
-import seedu.workbook.model.internship.Stage;
-import seedu.workbook.model.internship.util.StageUtil;
 
 /**
  * An UI component that displays information of a {@code Internship}.
  */
-public class InternshipCard extends UiPart<Region> {
+public class NarrowInternshipCard extends UiPart<Region> {
 
-    private static final String FXML = "InternshipListCard.fxml";
+    private static final String FXML = "NarrowInternshipListCard.fxml";
 
 
     /**
@@ -32,10 +29,6 @@ public class InternshipCard extends UiPart<Region> {
 
     public final Internship internship;
 
-    //Independent tips window residing in each internship list card controller
-    private TipsWindow tipsWindow;
-
-    private final Stage internshipStage;
 
     @FXML
     private HBox cardPane;
@@ -60,21 +53,16 @@ public class InternshipCard extends UiPart<Region> {
     /**
      * Creates a {@code InternshipCode} with the given {@code Internship} and index to display.
      */
-    public InternshipCard(Internship internship, int displayedIndex) {
+    public NarrowInternshipCard(Internship internship, int displayedIndex) {
         super(FXML);
         this.internship = internship;
-        this.internshipStage = internship.getStage();
-        boolean hasNoTips = internshipStage.hasNoTips();
 
-        if (hasNoTips) {
-            tipsButton.setVisible(false);
-        }
 
         id.setText(displayedIndex + ". ");
         company.setText(internship.getCompany().name);
         role.setText(internship.getRole().value);
         email.setText(internship.getEmail().value);
-        stage.setText(internshipStage.value);
+        stage.setText(internship.getStage().value);
         dateTime.setText(internship.getDateTime().value);
         internship.getLanguageTags().stream()
                 .sorted(Comparator.comparing(languageTag -> languageTag.tagName))
@@ -83,7 +71,6 @@ public class InternshipCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
 
-        tipsWindow = new TipsWindow();
     }
 
     @Override
@@ -94,37 +81,14 @@ public class InternshipCard extends UiPart<Region> {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof InternshipCard)) {
+        if (!(other instanceof NarrowInternshipCard)) {
             return false;
         }
 
         // state check
-        InternshipCard card = (InternshipCard) other;
+        NarrowInternshipCard card = (NarrowInternshipCard) other;
         return id.getText().equals(card.id.getText())
                 && internship.equals(card.internship);
     }
 
-    /**
-     * Opens the tip window depending on the internship stage.
-     */
-    @FXML
-    private void showTips() {
-        //Do not populate tips window for stages that have no stage-specific tips.
-        if (this.internshipStage.hasNoTips()) {
-            return;
-        }
-
-        //Set header of tips to be name of stage.
-        tipsWindow.setTipsHeader(this.internshipStage.value);
-
-        List<String> tips = StageUtil.getStageSpecificTips(this.internshipStage);
-
-        tipsWindow.populateTips(tips);
-
-        if (!tipsWindow.isShowing()) {
-            tipsWindow.show();
-        } else {
-            tipsWindow.focus();
-        }
-    }
 }

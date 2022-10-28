@@ -42,17 +42,17 @@ public class StageUtil {
     // 'STAR': https://www.themuse.com/advice/star-interview-method
     // 'online mock interviews': https://interviewing.io/?urc=DMCa
     private static final List<String> technicalInterviewTips = Arrays.asList(
-            "Mainly looking at your soft-skills and your ability to adapt and navigate about scenarios presented in the workplace.",
-            "Prepare relevant-to-the-role experiences beforehand, especially if it’s from school projects because you’re still a student! ;)",
-            "Try out the STAR framework to keep your answers concise and relevant to the question.",
-            "Be yourself! Be natural and confident. If it helps, practice with a friend and let them evaluate you. You can also try scheduling online mock interviews to put your skills to the test."
-    );
-
-    private static final List<String> behavioralInterviewTips = Arrays.asList(
             "Do not jump into coding right away. Coding questions tend to be vague and underspecified on purpose to gauge your attention to detail and carefulness. Ask at least 2-3 clarifying questions!",
             "Before starting, go through the different ways you could solve this question, discussing the time and space complexity tradeoffs!",
             "Explain what you are trying to achieve as you are coding to your interviewer, so he knows exactly what you are doing at each step!",
             "Once finished, remember to ALWAYS check that your code compiles and works for edge cases as well!"
+    );
+
+    private static final List<String> behavioralInterviewTips = Arrays.asList(
+            "Mainly looking at your soft-skills and your ability to adapt and navigate about scenarios presented in the workplace.",
+            "Prepare relevant-to-the-role experiences beforehand, especially if it’s from school projects because you’re still a student! ;)",
+            "Try out the STAR framework to keep your answers concise and relevant to the question.",
+            "Be yourself! Be natural and confident. If it helps, practice with a friend and let them evaluate you. You can also try scheduling online mock interviews to put your skills to the test."
     );
 
     private static final List<String> phoneInterviewTips = Arrays.asList(
@@ -85,12 +85,12 @@ public class StageUtil {
 
     private static final Map<Stage, List<String>> tipsForStage = new HashMap<>();
 
-    /**
-     * Constructor for StageUtil class
-     * Populates the map whereby each stage is mapped to a list of tips.
+    /*
+     * Static initialization block to populate the map.
+     * Each stage is mapped to a list of tips.
      */
-    private StageUtil() {
-        for (int i = 0; i < tipsForStage.size(); i++) {
+    static {
+        for (int i = 0; i < stagesWithTips.size(); i++) {
             tipsForStage.put(stagesWithTips.get(i), listOfTips.get(i));
         }
     }
@@ -105,15 +105,15 @@ public class StageUtil {
     /**
      * Returns a list of tips if stage is present in {@code stagesWithTips},
      * otherwise return an empty list.
-     * @param input the user input
+     * @param stage the given stage
      * @return a list of stage-specific tips
      */
-    public static List<String> getStageSpecificTips(String input) {
-        Stage providedStage = new Stage(input);
-        return (!stagesWithTips.contains(providedStage))
+    public static List<String> getStageSpecificTips(Stage stage) {
+        return (!stagesWithTips.contains(stage))
                 ? Collections.emptyList()
-                : tipsForStage.get(providedStage);
+                : tipsForStage.get(stage);
     }
+
 
     /**
      * Checks if a stage is in the pre-defined list of stages which has tips.

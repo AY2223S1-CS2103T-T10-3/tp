@@ -29,6 +29,7 @@ public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
     private static final String LC_LINK = "https://leetcode.com/problemset/all/";
+    private static final int WIDTH_BREAKPOINT = 1000;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -37,6 +38,7 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private InternshipListPanel internshipListPanel;
+    private WideInternshipListPanel wideInternshipListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
@@ -69,6 +71,8 @@ public class MainWindow extends UiPart<Stage> {
         setWindowDefaultSize(logic.getGuiSettings());
 
         setAccelerators();
+
+        setWidthEventHandlers();
 
         helpWindow = new HelpWindow();
     }
@@ -116,7 +120,12 @@ public class MainWindow extends UiPart<Stage> {
      */
     void fillInnerParts() {
         internshipListPanel = new InternshipListPanel(logic.getFilteredInternshipList());
-        internshipListPanelPlaceholder.getChildren().add(internshipListPanel.getRoot());
+        wideInternshipListPanel = new WideInternshipListPanel(logic.getFilteredInternshipList());
+        if (logic.getGuiSettings().getWindowWidth() >= WIDTH_BREAKPOINT) {
+            internshipListPanelPlaceholder.getChildren().add(wideInternshipListPanel.getRoot());
+        } else {
+            internshipListPanelPlaceholder.getChildren().add(internshipListPanel.getRoot());
+        }
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -138,6 +147,19 @@ public class MainWindow extends UiPart<Stage> {
             primaryStage.setX(guiSettings.getWindowCoordinates().getX());
             primaryStage.setY(guiSettings.getWindowCoordinates().getY());
         }
+    }
+
+    private void setWidthEventHandlers() {
+        this.primaryStage.widthProperty().addListener((observable, oldVal, newVal) -> {
+            if (newVal.doubleValue() >= WIDTH_BREAKPOINT) {
+                // toggle to different layout
+                internshipListPanelPlaceholder.getChildren().clear();
+                internshipListPanelPlaceholder.getChildren().add(wideInternshipListPanel.getRoot());
+            } else {
+                internshipListPanelPlaceholder.getChildren().clear();
+                internshipListPanelPlaceholder.getChildren().add(internshipListPanel.getRoot());
+            }
+        });
     }
 
     /**

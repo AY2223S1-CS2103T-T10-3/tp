@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Test;
 
 import seedu.workbook.testutil.InternshipBuilder;
 
-public class CompanyContainsKeywordsPredicateTest {
+public class StageContainsKeywordsPredicateTest {
 
     @Test
     public void equals() {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
 
-        CompanyContainsKeywordsPredicate firstPredicate = new CompanyContainsKeywordsPredicate(
+        StageContainsKeywordsPredicate firstPredicate = new StageContainsKeywordsPredicate(
                 firstPredicateKeywordList);
-        CompanyContainsKeywordsPredicate secondPredicate = new CompanyContainsKeywordsPredicate(
+        StageContainsKeywordsPredicate secondPredicate = new StageContainsKeywordsPredicate(
                 secondPredicateKeywordList);
 
         // same object -> returns true
         assertTrue(firstPredicate.equals(firstPredicate));
 
         // same values -> returns true
-        CompanyContainsKeywordsPredicate firstPredicateCopy = new CompanyContainsKeywordsPredicate(
+        StageContainsKeywordsPredicate firstPredicateCopy = new StageContainsKeywordsPredicate(
                 firstPredicateKeywordList);
         assertTrue(firstPredicate.equals(firstPredicateCopy));
 
@@ -42,33 +42,31 @@ public class CompanyContainsKeywordsPredicateTest {
     }
 
     @Test
-    public void test_companyContainsKeywords_returnsTrue() {
+    public void test_stageContainsKeywords_returnsTrue() {
         // One keyword
-        CompanyContainsKeywordsPredicate predicate = new CompanyContainsKeywordsPredicate(
-                Collections.singletonList("Jane"));
-        assertTrue(predicate.test(new InternshipBuilder().withCompany("Jane Street").build()));
+        StageContainsKeywordsPredicate predicate = new StageContainsKeywordsPredicate(
+                Collections.singletonList("Interview"));
+        assertTrue(predicate.test(new InternshipBuilder().withCompany("Technical Interview").build()));
 
         // Multiple keywords
-        predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("Jane", "Street"));
-        assertTrue(predicate.test(new InternshipBuilder().withCompany("Jane Street").build()));
-
+        predicate = new StageContainsKeywordsPredicate(Arrays.asList("Technical", "Interview"));
+        assertTrue(predicate.test(new InternshipBuilder().withStage("Technical Interview").build()));
 
         // Mixed-case keywords
-        predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("jAnE", "sTreeT"));
-        assertTrue(predicate.test(new InternshipBuilder().withCompany("Jane Street").build()));
+        predicate = new StageContainsKeywordsPredicate(Arrays.asList("tEcHnicAl", "inTeRviEw"));
+        assertTrue(predicate.test(new InternshipBuilder().withStage("Technical Interview").build()));
     }
 
     @Test
     public void test_companyDoesNotContainKeywords_returnsFalse() {
 
-
         // Non-matching keyword
-        CompanyContainsKeywordsPredicate predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("Fairprice"));
-        assertFalse(predicate.test(new InternshipBuilder().withCompany("Jane Street").build()));
+        StageContainsKeywordsPredicate predicate = new StageContainsKeywordsPredicate(Arrays.asList("Assessment"));
+        assertFalse(predicate.test(new InternshipBuilder().withStage("Phone Interview").build()));
 
         // Keywords match phone, email and address, but does not match company
-        predicate = new CompanyContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com"));
-        assertFalse(predicate.test(new InternshipBuilder().withCompany("Meta")
+        predicate = new StageContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com"));
+        assertFalse(predicate.test(new InternshipBuilder().withStage("Interview")
                 .withEmail("alice@email.com").build()));
     }
 }
