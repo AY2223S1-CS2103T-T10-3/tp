@@ -28,6 +28,7 @@ import seedu.workbook.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+    private static final String LC_LINK = "https://leetcode.com/problemset/all/";
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -168,16 +169,16 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens a link to LeetCode.
+     * Opens a link to LeetCode in user's browser.
     */
     @FXML
     private void handleLc() {
         try {
-            Desktop.getDesktop().browse(new URI("https://leetcode.com/problemset/all/"));
+            Desktop.getDesktop().browse(new URI(LC_LINK));
         } catch (IOException e) {
-
+            logger.info("IOException caught when opening LC link");
         } catch (URISyntaxException e) {
-
+            logger.info("URISyntaxException caught when opening LC link");
         }
     }
 
