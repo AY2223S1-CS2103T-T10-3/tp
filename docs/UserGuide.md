@@ -146,17 +146,17 @@ This section describes important information for you to take note of before and 
 
 * Otherwise, WorkBook will be in the wide layout which has an extra right panel for displaying tips.
 
-|              Wide Layout               |
-|:--------------------------------------:|
+|                      Wide Layout                      |
+|:-----------------------------------------------------:|
 | Resize the window to a wider width to get this layout |
-| ![wide layout](images/AnnotatedUi.png) |
+|        ![wide layout](images/AnnotatedUi.png)         |
 
 <div style="page-break-after: always;"></div>
 
-|                     Narrow Layout                      |  
-|:------------------------------------------------------:|
+|                      Narrow Layout                       |  
+|:--------------------------------------------------------:|
 | Resize the window to a narrower width to get this layout |
-| ![narrow layout](images/AnnotatedUiNarrowBulbOnly.png) |
+|  ![narrow layout](images/AnnotatedUiNarrowBulbOnly.png)  |
 
 
 
@@ -195,7 +195,7 @@ Simply follow the command format below to add the relevant details into WorkBook
 Format: `add c/COMPANY r/ROLE s/STAGE [d/DATETIME] [e/COMPANY_EMAIL] [l/LANGUAGE TAG]…​ [t/TAG]…​`
 
 Example: `add c/Meta r/Web Developer s/Application Sent d/20-Oct-2022 10:00 l/Java e/metaHires@meta.com` <br><br>
-What you will see:
+
 
 |                What you will see                 |
 |:------------------------------------------------:|
@@ -205,7 +205,7 @@ What you will see:
 <div markdown="block" class="alert alert-success">
 **:bulb: Tip:** The date and time you provide could represent multiple things:<br>
   * The date and time it happened
-  * The deadline of the corresponding `Stage`
+  * The deadline of the corresponding `STAGE`
 </div>
 
 <div markdown="block" class="alert alert-warning">
@@ -322,33 +322,48 @@ Examples:
 
 ### 5.6. Deleting your internship application
 
-If you want to remove an internship application then this command
-deletes the specified internship application from WorkBook.
+No longer interested in keeping the internship application in WorkBook? Removing it has never
+been easier! Simply use this command to delete the specified internship application from WorkBook
+and you will be free from it.
 
 Format: `delete INDEX`
 
-* Deletes the internship at the specified `INDEX`, which **must be**:
+* Deletes the internship application at the specified `INDEX`, which **must be**:
   * A positive number (1, 2, 3, …​).
   * Within the number range of your list of internship applications.
 
-Examples:
-* `list` followed by `delete 2` deletes the 2nd internship application in WorkBook.
-* `find Meta` followed by `delete 1` deletes the 1st internship application within the results of the `find` command.
+What you'll see before and after executing the command: <br>
+
+| State      | What you will see                         |
+|------------|-------------------------------------------|
+| **Before** | ![Before delete](images/BeforeDelete.png) |
+| **After**  | ![After delete](images/AfterDelete2.png)  |
+
+Other examples:
+* `list` followed by `delete 2` deletes the 2nd internship application amongst all the internship applications in WorkBook.
+* `find Meta` followed by `delete 1` deletes the 1st internship application among the results of the `find` command.
 
 ### 5.7. Clearing your existing internship applications
 
 Be it getting ready for a new internship application cycle or wanting to do a general spring-cleaning of your 
 list of internship applications in WorkBook, this command is the one for you!
 
-Use this command to clear all the applications you've previously saved in WorkBook.
-
 Format: `clear`
+
+Use this command to clear **all** the applications you've previously saved in WorkBook.
+
+What you'll see before and after executing the command: <br>
+
+| State      | What you will see                       |
+|------------|-----------------------------------------|
+| **Before** | ![Before clear](images/BeforeClear.png) |
+| **After**  | ![After clear](images/AfterClear.png)   |
 
 Example:
 * `clear` removes all internship applications in the WorkBook.
 
 <div markdown="block" class="alert alert-success">
-**:bulb: Tip:** If you cleared your internship applications by mistake, fret not as you can easily undo this!
+**:bulb: Tip:** If you cleared your internship applications by mistake, fret not as you can easily undo this by executing the `undo` command!
 </div>
 
 ### 5.8. Undoing your previous command
@@ -473,15 +488,24 @@ redoing and how your WorkBook currently looks like!
 
 ### 5.10. Viewing help
 
-This shows a summary of the commands as well as a link to this User Guide.
+If you happen to forget the format of WorkBook's commands, simply use this command to view the help window.
+A 'Help' button can also be found at the top of the app. You can access the help window from there too.
 
 Format: `help`
 
+This command shows a summary of the commands in WorkBook, as well as a link to this User Guide.
+
+|          What you will see           |
+|:------------------------------------:|
+| ![HelpWindow](images/HelpWindow.PNG) |
+
 ### 5.11. Exiting the program
 
-Exits the program.
+Once you are done adding your internship applications for the day, use this command to close WorkBook. 
 
 Format: `exit`
+
+This command exits WorkBook.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -494,8 +518,12 @@ Hence, you need not worry about pressing <kbd>ctrl</kbd> + <kbd>s</kbd> on your 
 
 ### 6.2. Editing
 
-All of your internship applications are saved in a JSON file under the `data` subfolder. 
+All of your internship applications are saved in a JSON file named `workbook.json` in the `data` subfolder. 
 You are free to update any internship application directly by editing that JSON file.
+
+|           What to look for           |
+|:------------------------------------:|
+| ![SavingData](images/SavingData.png) |
 
 <div markdown="block" class="alert alert-info">
 
@@ -513,7 +541,7 @@ If your changes to the data file makes its format invalid, WorkBook will discard
 ## 7. Frequently asked questions
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: [Install](#2-get-started) the app in the other computer, copy and override the JSON file in the new `data` subfolder, and you are done!
+**A**: [Install](#2-getting-started) the app in the other computer, copy and override the JSON file in the new `data` subfolder, and you are done!
 
 **Q**: How do I change the theme of WorkBook?<br>
 **A**: It is not possible as of now, but will be coming soon!
@@ -524,7 +552,7 @@ If your changes to the data file makes its format invalid, WorkBook will discard
 
 | Prefix | Symbolizes   |
 |--------|--------------|
-| **n/** | Company Name |
+| **c/** | Company Name |
 | **s/** | Stage        |
 | **r/** | Role         |
 | **d/** | DateTime     |
